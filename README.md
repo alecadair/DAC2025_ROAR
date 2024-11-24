@@ -17,7 +17,7 @@ To run this software, ensure the following prerequisites are met:
     - `matplotlib`
     - `pandas`
     - `numpy`
-    - Standard Python libraries: `os`, `sys`, `math`
+    - Standard Python libraries: `os`, `sys`, `math`, `getpass`, `shutil`, `operator`, `collections`, `copy`, `re`
 
 2. A **Make** utility is installed on your system.
 
@@ -45,7 +45,7 @@ To run this software, ensure the following prerequisites are met:
 
 ## Running the Example
 
-The repository includes an example design of a **N-Input Current Mirror OTA**, as described in the paper. To run this example:
+The repository includes an example design of a **8 Transistor N-Input Current Mirror OTA**, as described in the paper. To run this example:
 
 1. Navigate to the `design` directory:
     ```bash
