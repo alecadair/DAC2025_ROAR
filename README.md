@@ -1,5 +1,5 @@
 
-# DAC 2025 Repository for ROAR (Robust Optimal Analog Reuse) Software, Scripts, Results, and Images
+# DAC 2025 Repository for "Analytical Optimization for Robust and Efficient Analog IC Design Automation" Software, Scripts, Results, and Images
 ## Author: Alec S. Adair 
 For questions or comments e-mail alecadair1@gmail.com
 
