@@ -644,6 +644,47 @@ def plot_spice_results():
     plt.savefig("ac_simulation_plot.png", format="png", dpi=300)
     plt.show()
 
+def get_fingers_for_align(w1_2, w3_4, w5_6, w7_8):
+    # Define the pitch
+    pitch = 420e-9
+
+    # Function to calculate the number of fingers
+    def calculate_fingers(width):
+        # Calculate the number of fingers
+        num_fingers = round(width / pitch)
+        # Ensure the number of fingers is even
+        if num_fingers % 2 != 0:
+            num_fingers += 1
+        return num_fingers
+
+    # Calculate the number of fingers for each width
+    w1_2_fingers = calculate_fingers(w1_2)
+    w3_4_fingers = calculate_fingers(w3_4)
+    w5_6_fingers = calculate_fingers(w5_6)
+    w7_8_fingers = calculate_fingers(w7_8)
+
+    return w1_2_fingers, w3_4_fingers, w5_6_fingers, w7_8_fingers
+
+def size_ota_devices_from_kgm_and_currents(n_corner, p_corner, kgm_n, kgm_p, gain=50, bw=2e6):
+    av= 50
+    bw = 2e6
+    gbw = bw * av
+    therm_noise = 500e-9
+    cload = 4e-12
+    tan_thirty = math.tan(30*math.pi/180)
+    alpha = 1/tan_thirty
+    two_pi_alpha_gbw = 2*math.pi*alpha*gbw
+    f2 = alpha*gbw
+    total_current, m1_current, m6_current, beta_i_j, kcout_i_j, gain_i_j, thermal_rms_noise_i_j, beta_valid_i_j, gain_valid, thermal_noise_valid, kc_out = total_current_ota_v2(n_corner, p_corner, alpha, gbw, cload,
+                                                                                                                           kgm_n, kgm_p, gain_spec=gain,
+                                                                                                                           thermal_noise_spec=therm_noise)
+    iden1_2 = n_corner.lookup(param1="kgm", param2="iden", param1_val=kgm_n)
+    iden3_4 = p_corner.lookup(param1="kgm", param2="iden", param1_val=kgm_p)
+    w1_2 = m1_current/iden1_2
+    w3_4 = m1_current/iden3_4
+    w5_6 = m6_current/iden1_2
+    w7_8 = m6_current/iden3_4
+    return w1_2, w3_4, w5_6, w7_8
 
 def main():
 
@@ -699,47 +740,7 @@ def main():
     #w1, gm1, kgm1, w2, gm2, kgm2 = krummenechar_ota_stage1(av=av1, bw=bw, cload=cload1, nfet_device=nfet_device,
     #                                                pfet_device=pfet_device, nom_ncorner=nfet_nominal, nom_pcorner=pfet_nominal)
 
-def get_fingers_for_align(w1_2, w3_4, w5_6, w7_8):
-    # Define the pitch
-    pitch = 420e-9
 
-    # Function to calculate the number of fingers
-    def calculate_fingers(width):
-        # Calculate the number of fingers
-        num_fingers = round(width / pitch)
-        # Ensure the number of fingers is even
-        if num_fingers % 2 != 0:
-            num_fingers += 1
-        return num_fingers
-
-    # Calculate the number of fingers for each width
-    w1_2_fingers = calculate_fingers(w1_2)
-    w3_4_fingers = calculate_fingers(w3_4)
-    w5_6_fingers = calculate_fingers(w5_6)
-    w7_8_fingers = calculate_fingers(w7_8)
-
-    return w1_2_fingers, w3_4_fingers, w5_6_fingers, w7_8_fingers
-
-def size_ota_devices_from_kgm_and_currents(n_corner, p_corner, kgm_n, kgm_p, gain=50, bw=2e6):
-    av= 50
-    bw = 2e6
-    gbw = bw * av
-    therm_noise = 500e-9
-    cload = 4e-12
-    tan_thirty = math.tan(30*math.pi/180)
-    alpha = 1/tan_thirty
-    two_pi_alpha_gbw = 2*math.pi*alpha*gbw
-    f2 = alpha*gbw
-    total_current, m1_current, m6_current, beta_i_j, kcout_i_j, gain_i_j, thermal_rms_noise_i_j, beta_valid_i_j, gain_valid, thermal_noise_valid, kc_out = total_current_ota_v2(n_corner, p_corner, alpha, gbw, cload,
-                                                                                                                           kgm_n, kgm_p, gain_spec=gain,
-                                                                                                                           thermal_noise_spec=therm_noise)
-    iden1_2 = n_corner.lookup(param1="kgm", param2="iden", param1_val=kgm_n)
-    iden3_4 = p_corner.lookup(param1="kgm", param2="iden", param1_val=kgm_p)
-    w1_2 = m1_current/iden1_2
-    w3_4 = m1_current/iden3_4
-    w5_6 = m6_current/iden1_2
-    w7_8 = m6_current/iden3_4
-    return w1_2, w3_4, w5_6, w7_8
 
 if __name__ == "__main__":
     main()
