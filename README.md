@@ -54,7 +54,7 @@ The repository includes an example design of a **8 Transistor N-Input Current Mi
 
 2. Run the script `cm_ota.py` using Python:
     ```bash
-    python3 cm_ota.py
+    python3 design/cm_ota/scripts/cm_ota.py
     ```
 
 ## Additional Notes
